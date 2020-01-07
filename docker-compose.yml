@@ -1,0 +1,10 @@
+version: "3"
+services:
+  django:
+    image: frolvlad/alpine-python3
+    volumes: 
+      - ./django-realworld-example-app:/drf
+    working_dir: /drf
+    command: sh -c "pip install -r requirements.txt && python manage.py runserver 0.0.0.0:8000"
+    ports: 
+      - "8000:8000"
