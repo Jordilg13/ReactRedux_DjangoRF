@@ -1,18 +1,21 @@
-version: "3"
+version: "3.1"
 services:
   
   django:
+    build: ./django-realworld-example-app
     image: frolvlad/alpine-python3
+    restart: on-failure
     volumes: 
       - ./django-realworld-example-app:/drf
     working_dir: /drf
-    command: sh -c "pip install -r requirements.txt && python manage.py runserver 0.0.0.0:8000"
+    command: sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     ports: 
       - "8000:8000"
     networks: 
       - internal_net
   
   react:
+    # build: ./react
     image: node:12.2.0-alpine
     volumes: 
       - ./react:/app
@@ -25,5 +28,20 @@ services:
     networks: 
       - internal_net
 
+  postgres:
+    image: postgres:10.0-alpine
+    ports: 
+      - "5432:5432"
+    networks: 
+      - internal_net
+    env_file: 
+      - postgres.env
+    volumes: 
+      - postgres_vol
+
+
 networks: 
   internal_net:
+
+volumes: 
+  postgres_vol:
