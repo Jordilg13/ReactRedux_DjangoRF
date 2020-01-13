@@ -1,7 +1,0 @@
-Django==1.10.5
-django-cors-middleware==1.5.0
-django-extensions==2.2.5
-djangorestframework==3.4.4
-PyJWT==1.7.1
-six==1.13.0
-psycopg2==2.8.4

@@ -2,17 +2,19 @@ version: "3.1"
 services:
   
   django:
-    build: ./django-realworld-example-app
+    build: ./django
     image: frolvlad/alpine-python3
     restart: on-failure
     volumes: 
-      - ./django-realworld-example-app:/drf
+      - ./django:/drf
     working_dir: /drf
-    command: sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    command: sh -c "pip install -r requirements.txt && python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     ports: 
       - "8000:8000"
     networks: 
       - internal_net
+      - redis
+    container_name: Yango
   
   react:
     # build: ./react
@@ -27,6 +29,7 @@ services:
       - "4100:4100"
     networks: 
       - internal_net
+    container_name: React
 
   postgres:
     image: postgres:10.0-alpine
@@ -38,10 +41,24 @@ services:
       - postgres.env
     volumes: 
       - postgres_vol
+    container_name: Postgres
+
+  redis:
+    image: redis:alpine
+    restart: on-failure
+    ports: 
+      - "6379:6379"
+    volumes:
+      - "redis:/redis_data"
+    networks: 
+      - redis
+    container_name: Redis
 
 
 networks: 
   internal_net:
+  redis:
 
 volumes: 
   postgres_vol:
+  redis:

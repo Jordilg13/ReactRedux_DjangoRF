@@ -1,6 +1,9 @@
 # CUSTOM
 env/
 migrations/
+.idea/
+.vscode/
+
 
 
 # Created by https://www.gitignore.io/api/react,django
