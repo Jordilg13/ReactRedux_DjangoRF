@@ -2,34 +2,38 @@ version: "3.1"
 services:
   
   django:
-    build: ./django
-    image: frolvlad/alpine-python3
-    restart: on-failure
+    build: ./backend
+    image: nvidia/cuda:10.2-cudnn7-devel
+#    restart: on-failure
     volumes: 
-      - ./django:/drf
+      - ./backend:/drf
     working_dir: /drf
-    command: sh -c "pip install -r requirements.txt && python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    command: sh -c "pip install -r requirements.txt && python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
     ports: 
       - "8000:8000"
     networks: 
       - internal_net
       - redis
+    devices: 
+      - /dev/nvidia0:/dev/nvidia0
+      - /dev/nvidiactl:/dev/nvidiactl
+      - /dev/nvidia-modeset:/dev/nvidia-modeset
     container_name: Yango
   
-  react:
-    # build: ./react
-    image: node:12.2.0-alpine
-    volumes: 
-      - ./react:/app
-    working_dir: /app
-    command: sh -c "npm i && npm start --host=0.0.0.0:4100"
-    environment: 
-      - NODE_ENV=development
-    ports: 
-      - "4100:4100"
-    networks: 
-      - internal_net
-    container_name: React
+  # react:
+  #   # build: ./react
+  #   image: node:12.2.0-alpine
+  #   volumes: 
+  #     - ./react:/app
+  #   working_dir: /app
+  #   command: sh -c "npm i && npm start --host=0.0.0.0:4100"
+  #   environment: 
+  #     - NODE_ENV=development
+  #   ports: 
+  #     - "4100:4100"
+  #   networks: 
+  #     - internal_net
+  #   container_name: React
 
   postgres:
     image: postgres:10.0-alpine
