@@ -1,4 +1,7 @@
-FROM nvidia/cuda:10.2-cudnn7-devel
+FROM nvidia/cuda:10.1-cudnn7-devel
+
+# custom
+# RUN apt install nvidia-driver-418
 
 # Install face recognition dependencies
 
