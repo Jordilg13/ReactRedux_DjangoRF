@@ -13,14 +13,22 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include, url
 
+
 from backend.testapp.views import ForAdmins
+from backend.uploadfile.views import FileUploadView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'api/', include(('backend.testapp.urls', 'api-testapp'), namespace='api-testapp')),
-    url(r'^foradmins/$' , ForAdmins.as_view({'get': 'list','post': 'create'}) , name='foradmins')
+    url(r'^foradmins/$' , ForAdmins.as_view({'get': 'list','post': 'create'}) , name='foradmins'),
+    url(r'upload/', FileUploadView.as_view(), name="upload")
 ]
+
+if settings.DEBUG:
+  urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

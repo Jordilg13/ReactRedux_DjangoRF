@@ -20,21 +20,21 @@ class GetOne(generics.RetrieveAPIView):
     lookup_field = 'slug'
     serializer_class = TesttSerializer
     queryset = Testt.objects.all()
+
     # permission_classes = [IsAuthenticatedOrReadOnly]
 
-    def retrieve(self, request, *args, **kwargs):
+    def retrieve(self , request , *args , **kwargs):
         try:
-            fffff = Testt.objects.get(slug=kwargs['slug'])
+            element = Testt.objects.get(slug=kwargs['slug'])
         except Testt.DoesNotExist:
             return Response({"detail": "Not found."} , status=404)
 
         # TODO: serialize data
-        return Response(str(fffff) , status=status.HTTP_204_NO_CONTENT)
+        return Response(str(element) , status=status.HTTP_204_NO_CONTENT)
+
 
 # GetAll
 class GetAll(generics.ListAPIView):
-    # lookup_field = 'slug'
-    # queryset = Testt.objects.all()
     serializer_class = TesttSerializer
 
     def get_queryset(self):
@@ -57,10 +57,10 @@ class DeleteOne(generics.DestroyAPIView):
 
     def destroy(self , request , *args , **kwargs):
         try:
-            fffff = Testt.objects.get(slug=kwargs['slug'])
+            element = Testt.objects.get(slug=kwargs['slug'])
         except Testt.DoesNotExist:
             return Response({"detail": "Not found."} , status=404)
 
-        fffff.delete()
+        element.delete()
 
         return Response(None , status=status.HTTP_204_NO_CONTENT)
