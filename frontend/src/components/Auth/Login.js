@@ -14,6 +14,7 @@ import agent from '../../agent';
 import styles from "./styles"
 import { LOGIN_PAGE_UNLOADED, LOGIN } from "../../constants/actionTypes"
 import { connect } from 'react-redux';
+import { Link } from '@material-ui/core';
 
 
 const mapStateToProps = state => ({ ...state.auth });
@@ -42,15 +43,18 @@ class Login extends Component {
     };
   }
 
+  componentDidMount() {
+    console.log(this.props);
+
+  }
   componentWillUnmount() {
     // This is executed just before the comp is destroyed
     this.props.onUnload();
   }
-  
+
   render() {
     const { classes } = this.props;
-    // const email = this.props.email;
-    // const password = this.props.password;
+
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -102,8 +106,12 @@ class Login extends Component {
             >
               Sign In
                          </Button>
-            <Grid container>
-
+            <Grid container justify="flex-end">
+              <Grid item>
+                <Link href="/register" variant="body2">
+                  Need an account? Sign up
+              </Link>
+              </Grid>
             </Grid>
           </form>
         </div>

@@ -4,7 +4,7 @@ import {
     LOGIN_PAGE_UNLOADED,
     REGISTER_PAGE_UNLOADED,
     ASYNC_START,
-    UPDATE_FIELD_AUTH
+    UPDATE_FIELD_AUTH,
 } from "../constants/actionTypes"
 
 export default (state = {}, action) => {
@@ -27,6 +27,10 @@ export default (state = {}, action) => {
                 return {
                     ...state,
                     inProgress: true
+                }
+            } else {
+                return {
+                    ...state
                 }
             }
             break;

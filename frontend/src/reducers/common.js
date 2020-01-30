@@ -1,23 +1,45 @@
-import {LOGIN,REGISTER} from "../constants/actionTypes"
+import {
+    LOGIN,
+    REGISTER,
+    REGISTER_PAGE_UNLOADED,
+    LOGOUT,
+    APP_LOAD
+} from "../constants/actionTypes"
+
 const initialState = {
-    token: null
+    token: null,
+    currentUser: null,
 }
 
 export default (state = initialState, action) => {
-    console.log("common");
-
     switch (action.type) {
+
+        case APP_LOAD:
+            return {
+                ...state,
+                token: action.token || null,
+                appLoaded: true,
+                currentUser: action.payload ? action.payload.user : null
+            };
+
+        case LOGOUT:
+            return { 
+                ...state, 
+                redirectTo: '/', 
+                token: null, 
+                currentUser: null };
 
         case LOGIN:
         case REGISTER:
-            
-            console.log(action);
             return {
                 ...state,
                 redirectTo: action.error ? null : '/',
                 token: action.error ? null : action.payload.user.token,
                 currentUser: action.error ? null : action.payload.user
             };
+
+        case REGISTER_PAGE_UNLOADED:
+            return { ...state, viewChangeCounter: state.viewChangeCounter + 1 };
 
         default:
             return state

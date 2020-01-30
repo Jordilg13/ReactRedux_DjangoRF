@@ -6,19 +6,19 @@ import * as serviceWorker from './serviceWorker';
 
 import { Provider } from 'react-redux';
 
-import { store } from './store';
-import { Route, Switch, BrowserRouter } from 'react-router-dom';
+import { store, history } from './store';
+import { Route, Switch, Router } from 'react-router-dom';
 // import ConnectedRouter from 'react-router-redux';
 
 
 ReactDOM.render((
 
     <Provider store={store}>
-        <BrowserRouter >
+        <Router history={history}>
             <Switch>
                 <Route path="/" component={App} />
             </Switch>
-        </BrowserRouter>
+        </Router>
     </Provider>
 
 ), document.getElementById('root')
