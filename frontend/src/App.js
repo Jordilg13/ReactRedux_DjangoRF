@@ -10,10 +10,11 @@ function App() {
   return (
     <div>
       <Switch>
-        <Route exact path="/" component={Layout}></Route>
         <Route path="/login" component={Login}></Route>
         <Route path="/register" component={Register}></Route>
+        <Route path="/" component={Layout}></Route>
       </Switch>
+      {/* <Layout></Layout> */}
 
     </div>
   );

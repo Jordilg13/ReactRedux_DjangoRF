@@ -32,8 +32,14 @@ const Auth = {
         requests.post("/users/register", { user: { username, email, password } })
 }
 
+const Images = {
+    send: (file) =>
+        requests.post("/upload", file)
+}
+
 
 export default {
     Auth,
+    Images,
     setToken: _token => { token = _token; }
 }

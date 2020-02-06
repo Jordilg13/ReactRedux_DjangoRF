@@ -11,22 +11,31 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-import { Switch } from 'react-router-dom';
-import { Button, IconButton, Menu, MenuItem, withStyles } from '@material-ui/core';
+import { Switch, Route } from 'react-router-dom';
+import { Button, IconButton, Menu, MenuItem, withStyles, Link, Badge, InputBase } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import agent from '../../agent';
 import useStyles from "./styles"
+import { ListPhotos } from '../Photos/ListPhotos';
+import PhotoSizeSelectActualOutlinedIcon from '@material-ui/icons/PhotoSizeSelectActualOutlined';
+import SearchIcon from '@material-ui/icons/Search';
+import UploadPhoto from '../Photos/UploadPhoto';
 
 
 
 
-function ClippedDrawer(props) {
+
+
+
+
+
+function Layout(props) {
     const classes = props.classes
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
-    
+
     const handleMenu = event => {
         setAnchorEl(event.currentTarget);
     };
@@ -41,51 +50,78 @@ function ClippedDrawer(props) {
         if (token) {
             agent.setToken(token);
         }
-        props.onLoad(token ? agent.Auth.current(): null, token)
-    },[])
+        props.onLoad(token ? agent.Auth.current() : null, token)
+    }, [])
 
 
     return (
         <div className={classes.root}>
             <CssBaseline />
             <AppBar position="fixed" className={classes.appBar}>
-                <Toolbar>
-                    <Typography variant="h6" noWrap>Jordilg Photos</Typography>
-                    <div className={classes.toolbarButtons}>
+                <Toolbar >
+                    <Typography variant="h6" noWrap >
+                        <Link href="/" color="inherit" style={{ textDecoration: 'none', marginLeft: "35px" }}>
+                            Jordilg Photos
+                    </Link>
+                    </Typography>
+                    <div className={classes.search}>
+                        <div className={classes.searchIcon}>
+                            <SearchIcon />
+                        </div>
+                        <InputBase
+                            placeholder="Search…"
+                            classes={{
+                                root: classes.inputRoot,
+                                input: classes.inputInput,
+                            }}
+                            inputProps={{ 'aria-label': 'search' }}
+                        />
+                    </div>
+
+                   <UploadPhoto></UploadPhoto>
+
+
+                    <div className={classes.sectionDesktop}>
+
                         {
                             props.token ? (
-                                <div>
-                                    <IconButton
-                                        aria-label="account of current user"
-                                        aria-controls="menu-appbar"
-                                        aria-haspopup="true"
-                                        onClick={handleMenu}
-                                        color="inherit"
-                                    >
-                                        <AccountCircle />
-                                    </IconButton>
-                                    <Menu
-                                        id="menu-appbar"
-                                        anchorEl={anchorEl}
-                                        anchorOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'right',
-                                        }}
-                                        keepMounted
-                                        transformOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'right',
-                                        }}
-                                        open={open}
-                                        onClose={handleClose}
-                                    >
-                                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                                        <MenuItem onClick={handleClose} onClick={props.logout}>Logout</MenuItem>
-                                    </Menu>
-                                </div>)
+                                // LOGGED USER
+                                <>
+
+                                    <Typography variant="h6" style={{ marginTop: "7px" }} >{props.currentUser.username}</Typography>
+                                    <div>
+                                        <IconButton
+                                            aria-label="account of current user"
+                                            aria-controls="menu-appbar"
+                                            aria-haspopup="true"
+                                            onClick={handleMenu}
+                                            color="inherit"
+                                        >
+                                            <AccountCircle />
+                                        </IconButton>
+                                        <Menu
+                                            id="menu-appbar"
+                                            anchorEl={anchorEl}
+                                            anchorOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                            keepMounted
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                            open={open}
+                                            onClose={handleClose}
+                                        >
+                                            <MenuItem onClick={handleClose}>Profile</MenuItem>
+                                            <MenuItem onClick={handleClose}>My account</MenuItem>
+                                            <MenuItem onClick={handleClose} onClick={props.logout}>Logout</MenuItem>
+                                        </Menu>
+                                    </div></>)
                                 :
-                                <Button onClick={() => props.goToLogin()} color="inherit" >Login</Button>
+                                // NOT LOGGED
+                                <Button onClick={() => props.goTo("/login")} color="inherit" >Login</Button>
                         }
                     </div>
                 </Toolbar>
@@ -99,12 +135,10 @@ function ClippedDrawer(props) {
             >
                 <div className={classes.toolbar} />
                 <List>
-                    {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
+                    <ListItem button key="1" onClick={() => props.goTo("/photos")}>
+                        <ListItemIcon><PhotoSizeSelectActualOutlinedIcon /></ListItemIcon>
+                        <ListItemText primary="Photos" />
+                    </ListItem>
                 </List>
                 <Divider />
                 <List>
@@ -120,7 +154,8 @@ function ClippedDrawer(props) {
                 <div className={classes.toolbar} />
 
                 <Switch>
-
+                    <Route path="/photos" component={ListPhotos}></Route>
+                    {/* <Route path="/register" component={Register}></Route> */}
                 </Switch>
 
             </main>
@@ -132,14 +167,14 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    goToLogin: () =>
-        dispatch(push("/login")),
+    goTo: (url) =>
+        dispatch(push(url)),
     onLoad: (payload, token) =>
         dispatch({ type: "APP_LOAD", payload, token, skipTracking: true }),
     logout: () =>
-        dispatch({type: "LOGOUT"})
+        dispatch({ type: "LOGOUT" })
 
 })
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(useStyles)(ClippedDrawer))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(useStyles)(Layout))
