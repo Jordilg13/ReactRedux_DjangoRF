@@ -9,6 +9,7 @@ router.register(r'images_admin', UserImageViewSetAdmin)
 urlpatterns = [
     path('upload', ImageUploadView.as_view()),
     path('userimages', GetAll.as_view()),
+    path("media", Media.as_view()),
     # path("mvimages", UserImageViewSetAdmin.as_view({
     #     "get": "list",
     #     "delete": "destroy",

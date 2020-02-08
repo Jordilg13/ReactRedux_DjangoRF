@@ -42,12 +42,9 @@ class ImageUploadView(generics.CreateAPIView):
             context={"owner": request.user.profile}
         )
         if serializer.is_valid():
-            print("SUCCESS")
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            print("ERRORSS")
-            print(serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -58,3 +55,20 @@ class GetAll(generics.ListAPIView):
 
     def get_queryset(self):
         return UserImage.objects.all()
+
+
+class Media(generics.ListAPIView):
+    serializer_class = UserImageSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = UserImage.objects.select_related("owner", "owner__user")
+    
+
+    def get_queryset(self):
+        owner = self.request.user.profile
+        return self.queryset.filter(owner__user__username=owner)
+    
+
+
+
+    
+

@@ -1,5 +1,6 @@
 import superagentPromise from 'superagent-promise';
 import _superagent from 'superagent';
+import { List } from '@material-ui/core';
 
 const superagent = superagentPromise(_superagent, global.Promise);
 
@@ -34,7 +35,9 @@ const Auth = {
 
 const Images = {
     send: (file) =>
-        requests.post("/upload", file)
+        requests.post("/upload", file),
+    list: () =>
+        requests.get("/media")
 }
 
 

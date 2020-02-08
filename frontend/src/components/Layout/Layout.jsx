@@ -18,7 +18,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import agent from '../../agent';
 import useStyles from "./styles"
-import { ListPhotos } from '../Photos/ListPhotos';
+import ListPhotos from '../Photos/ListPhotos';
 import PhotoSizeSelectActualOutlinedIcon from '@material-ui/icons/PhotoSizeSelectActualOutlined';
 import SearchIcon from '@material-ui/icons/Search';
 import UploadPhoto from '../Photos/UploadPhoto';
@@ -170,7 +170,7 @@ const mapDispatchToProps = dispatch => ({
     goTo: (url) =>
         dispatch(push(url)),
     onLoad: (payload, token) =>
-        dispatch({ type: "APP_LOAD", payload, token, skipTracking: true }),
+        dispatch({ type: "APP_LOAD", payload, token }),
     logout: () =>
         dispatch({ type: "LOGOUT" })
 

@@ -13,19 +13,13 @@ const promiseMiddleware = store => next => action => {
 
   if (isPromise(action.payload)) {
     console.log(action);
-    
+
     store.dispatch({ type: ASYNC_START, subtype: action.type });
 
-    const currentView = store.getState().viewChangeCounter;  
-    const skipTracking = action.skipTracking;
 
     action.payload.then(
-      res => {        
-        console.log('RESULT', res);
-        const currentState = store.getState()
-        if (!skipTracking && currentState.viewChangeCounter !== currentView) {
-          return
-        }
+      res => {
+        // console.log('MIDDLEWARE_RESULT', res);
 
         action.payload = res;
         store.dispatch({ type: ASYNC_END, promise: action.payload });
@@ -33,16 +27,12 @@ const promiseMiddleware = store => next => action => {
         // redirect to home
         if (action.type === "LOGIN" || action.type === "REGISTER") {
           store.dispatch(push("/"))
-          
+
         }
-        
+
       },
       error => {
         console.log('ERROR', error);
-        const currentState = store.getState()
-        if (!skipTracking && currentState.viewChangeCounter !== currentView) {
-          return
-        }
         action.error = true;
         action.payload = error.response.body;
         if (!action.skipTracking) {
@@ -73,7 +63,7 @@ const localStorageMiddleware = store => next => action => {
   next(action);
 };
 
-function isPromise(v) { 
+function isPromise(v) {
   return v && typeof v.then === 'function';
 }
 

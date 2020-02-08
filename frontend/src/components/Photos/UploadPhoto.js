@@ -10,7 +10,7 @@ export class UploadPhoto extends Component {
 
         this.onChange = (e) => {
             var formData = new FormData()
-            formData.append("image", e.target.files[0])            
+            formData.append("image", e.target.files[0])
             agent.Images.send(formData)
         }
     }

@@ -39,7 +39,7 @@ export default (state = initialState, action) => {
             };
 
         case REGISTER_PAGE_UNLOADED:
-            return { ...state, viewChangeCounter: state.viewChangeCounter + 1 };
+            return { ...state };
 
         default:
             return state
