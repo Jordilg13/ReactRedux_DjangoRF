@@ -4,6 +4,7 @@ import { Button } from '@material-ui/core';
 import { connect } from 'react-redux'
 import agent from '../../agent';
 
+
 export class UploadPhoto extends Component {
     constructor(props) {
         super(props)

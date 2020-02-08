@@ -42,6 +42,7 @@ class UserImageSerializer(serializers.ModelSerializer):
         owner = self.context.get('owner', None)
         tags = validated_data.pop('tags', [])
         image = UserImage.objects.create(owner=owner, **validated_data)
+        print(tags)
 
         for tag in tags:
             image.tags.add(tag)

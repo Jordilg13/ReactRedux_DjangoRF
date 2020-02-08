@@ -1,0 +1,10 @@
+*.jpg
+*.jpeg
+*.mp4
+dlib/
+*dataset*
+.vscode/
+*env*/
+output/
+*.pickle
+cpu/

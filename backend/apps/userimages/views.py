@@ -5,6 +5,9 @@ from rest_framework.response import Response
 from .models import UserImage
 from .serializers import UserImageSerializer
 
+# Face recognition
+from utils.face_recognition.lib_detec_faces import Faces
+
 # Create your views here.
 
 
@@ -30,6 +33,12 @@ class ImageUploadView(generics.CreateAPIView):
     #     print(author)
 
     def create(self, request):
+        # analyze the image to detect faces
+        # TODO: change the absolute route 
+        # TODO: call the face detection function from here, not from Faces.__init__
+        faces = Faces(
+            "/drf/utils/face_recognition/pickles/app.pickle", request.data['image'])
+
         imagedata = {
             'image': request.data['image'],
             'owner': request.user.profile,
@@ -37,9 +46,15 @@ class ImageUploadView(generics.CreateAPIView):
             'request': request,
         }
 
+        # If there are any detected face
+        if len(faces.detected_faces[1]) > 0:
+            imagedata['tags'] = {"".join(faces.detected_faces[1])}
+
         serializer = self.serializer_class(
             data=imagedata,
-            context={"owner": request.user.profile}
+            context={
+                "owner": request.user.profile,
+            }
         )
         if serializer.is_valid():
             serializer.save()
@@ -61,14 +76,7 @@ class Media(generics.ListAPIView):
     serializer_class = UserImageSerializer
     permission_classes = (permissions.IsAuthenticated,)
     queryset = UserImage.objects.select_related("owner", "owner__user")
-    
 
     def get_queryset(self):
         owner = self.request.user.profile
         return self.queryset.filter(owner__user__username=owner)
-    
-
-
-
-    
-

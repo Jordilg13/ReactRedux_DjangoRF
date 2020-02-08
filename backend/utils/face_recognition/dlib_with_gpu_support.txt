@@ -1,0 +1,7 @@
+git clone dlib
+cd dlib
+mkdir build
+cd build
+cmake .. -DCUDA_HOST_COMPILER=/usr/bin/gcc-7
+pip3 uninstall dlib
+sudo python3 setup.py install --set CMAKE_C_COMPILER=gcc-7
