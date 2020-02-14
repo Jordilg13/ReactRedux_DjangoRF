@@ -25,12 +25,6 @@ import UploadPhoto from '../Photos/UploadPhoto';
 
 
 
-
-
-
-
-
-
 function Layout(props) {
     const classes = props.classes
     const [anchorEl, setAnchorEl] = React.useState(null);

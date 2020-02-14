@@ -8,6 +8,29 @@ import {
 } from './constants/actionTypes';
 import { push } from 'react-router-redux';
 
+
+
+const UploadImageMiddleware = store => next => action => {
+  console.log("IMAGEMIDD", action);
+
+  if (action.type === "UPLOAD_IMAGE") {
+    store.dispatch({ type: "START_UPLOADING_IMAGE" });
+
+    action.image.then(
+      res => {        
+        console.log(res);
+        
+        store.dispatch({ type: "FINISH_UPLOADING_IMAGE"});
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+  next(action)
+  
+}
+
 // Promise middleware, sets the state in progress while the promise is not solved
 const promiseMiddleware = store => next => action => {
 
@@ -68,4 +91,4 @@ function isPromise(v) {
 }
 
 
-export { promiseMiddleware, localStorageMiddleware }
+export { promiseMiddleware, localStorageMiddleware, UploadImageMiddleware }

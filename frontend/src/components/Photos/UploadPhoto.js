@@ -3,20 +3,44 @@ import PublishIcon from '@material-ui/icons/Publish';
 import { Button } from '@material-ui/core';
 import { connect } from 'react-redux'
 import agent from '../../agent';
+import { SnackbarProvider, useSnackbar, withSnackbar } from 'notistack';
+import { Snackbar } from "../Common/SnackBar"
 
 
-export class UploadPhoto extends Component {
-    constructor(props) {
-        super(props)
+class UploadPhoto extends Component {
+    constructor() {
+        super()
+
+        this.state = {
+
+        }
+
 
         this.onChange = (e) => {
+            this.props.enqueueSnackbar("Uploading...")
             var formData = new FormData()
             formData.append("image", e.target.files[0])
-            agent.Images.send(formData)
+            // agent.Images.send(formData)
+            this.props.uploadImage(formData)
+
+
         }
     }
 
+    // componentDidMount() {
+    //     console.log("DIDMOUNT");
+    // }
+    // replaces componentWillReceiveProps that is deprecated
+    static getDerivedStateFromProps(nextProps, prevProps) {
 
+        // if is uploaded shows the success snackbar
+        if (nextProps.uploading !== prevProps.uploading && nextProps.uploading) {
+            nextProps.enqueueSnackbar("Succesfully uploaded", {
+                variant: 'success',
+            })
+        }
+        return nextProps
+    }
 
     render() {
         return (
@@ -31,6 +55,7 @@ export class UploadPhoto extends Component {
                     <input
                         type="file"
                         style={{ display: "none" }}
+                        // onChange={this.onChange}
                         onChange={this.onChange}
                         encType="multipart/form-data"
                     />
@@ -41,15 +66,20 @@ export class UploadPhoto extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    ...state
+    ...state.listimages
 })
 
 const mapDispatchToProps = dispatch => ({
-    // upladImage: (image) =>
-    //     dispatch({
-    //         type: "UPLOAD_IMAGE",
-    //         image
-    //     })
+    uploadImage: (formdata) =>
+        dispatch({
+            type: "UPLOAD_IMAGE",
+            image: agent.Images.send(formdata)
+        }),
+    getImages: () =>
+        dispatch({
+            type: "GET_USER_IMAGES",
+            payload: agent.Images.list()
+        }),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(UploadPhoto)
+export default connect(mapStateToProps, mapDispatchToProps)(withSnackbar(UploadPhoto))

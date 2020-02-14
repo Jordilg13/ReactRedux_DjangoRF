@@ -14,7 +14,6 @@ function App() {
         <Route path="/register" component={Register}></Route>
         <Route path="/" component={Layout}></Route>
       </Switch>
-      {/* <Layout></Layout> */}
 
     </div>
   );

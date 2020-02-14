@@ -37,7 +37,10 @@ class ImageUploadView(generics.CreateAPIView):
         # TODO: change the absolute route 
         # TODO: call the face detection function from here, not from Faces.__init__
         faces = Faces(
-            "/drf/utils/face_recognition/pickles/app.pickle", request.data['image'])
+            "/drf/utils/face_recognition/pickles/raul_jordi.pickle", 
+            request.data['image'],
+            "hog"
+            )
 
         imagedata = {
             'image': request.data['image'],
@@ -47,8 +50,14 @@ class ImageUploadView(generics.CreateAPIView):
         }
 
         # If there are any detected face
+        print(faces.detected_faces)
         if len(faces.detected_faces[1]) > 0:
-            imagedata['tags'] = {"".join(faces.detected_faces[1])}
+            facess = {}
+            # TODO: change the tags system
+            for j in faces.detected_faces[0]:
+                facess[j] = j
+            print(facess)
+            imagedata['tags'] = facess
 
         serializer = self.serializer_class(
             data=imagedata,

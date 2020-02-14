@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^7.2.1",
     "history": "^4.10.1",
     "mdbreact": "^4.25.0",
+    "notistack": "^0.9.7",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-grid-gallery": "^0.5.5",
@@ -21,7 +22,8 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-logger": "^3.0.6",
     "superagent": "^5.2.1",
-    "superagent-promise": "^1.1.0"
+    "superagent-promise": "^1.1.0",
+    "toastr": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",

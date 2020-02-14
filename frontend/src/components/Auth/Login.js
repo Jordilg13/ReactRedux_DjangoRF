@@ -29,6 +29,7 @@ const mapDispatchToProps = dispatch => ({
 class Login extends Component {
   constructor() {
     super();
+    
     this.handleChange = e => {
       const { name, value } = e.target;
       this.setState({ [name]: value });

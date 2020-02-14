@@ -1,5 +1,5 @@
 
-export default (state = {}, action) => {
+export default (state = { uploading: false }, action) => {
     // console .log(action);
 
     switch (action.type) {
@@ -8,6 +8,20 @@ export default (state = {}, action) => {
             return {
                 ...state,
                 images: action.payload
+            }
+        case "START_UPLOADING_IMAGE":
+            console.log("start");
+
+            return {
+                ...state,
+                uploading: true
+            }
+        case "FINISH_UPLOADING_IMAGE":
+            console.log("end");
+
+            return {
+                ...state,
+                uploading: false
             }
 
         default:

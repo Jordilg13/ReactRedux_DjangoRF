@@ -3,6 +3,10 @@ import { connect, useSelector } from 'react-redux'
 import Gallery from 'react-grid-gallery';
 import { Input, Button } from '@material-ui/core';
 import agent from '../../agent';
+import { push } from 'react-router-redux';
+import toastr from 'toastr'
+import 'toastr/build/toastr.min.css'
+
 
 
 const mapStateToProps = (state) => ({ ...state.listimages });
@@ -13,89 +17,91 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch({
             type: "GET_USER_IMAGES",
             payload: agent.Images.list()
-        })
+        }),
+    goTo: (url) =>
+        dispatch(push(url))
 });
 
 function ListPhotos(props) {
 
-    // const [ph, setph] = useState(props.images)
-    console.log(props);
-
+    // similar to componentwillmount with functional components
     useEffect(() => {
+        console.log(props);
+
         const token = window.localStorage.getItem("jwt")
         if (token) {
             agent.setToken(token);
+            props.getImages()
+        } else {
+            toastr.error(`You should be logged to see the images`)
+            props.goTo("/login")
         }
-        props.getImages()
+    }, [props.uploading]) // checks if there are any new photo to reload the list
 
-    }, [])
+    function myTileViewportStyleFn(index) {
+        console.log(this._gallery.children[index+1]);
+    }
 
+
+    let printPhotos = () => {
+        if (props.hasOwnProperty("images")) {
+            if (props.images !== null) {
+                return <Gallery
+                    images={images}
+                    key="sad"
+                    backdropClosesModal={true}
+                    lightboxWillOpen={myTileViewportStyleFn}
+                ></Gallery>
+            }
+        }
+        return <h3>You don't have any images, you can upload one clicking the button on the topside.</h3>
+    }
+
+
+    // check if the images are setted in the store
     if (props.hasOwnProperty("images")) {
-        var images = []
-        var tags = []
-        for (let i of props.images.results) {
-            tags = []
-            for (const tag of i.tags) {
-                tags.push({
-                    value: tag,
-                    title: tag
+        if (props.images !== null) {
+
+
+            var images = []
+            var tags = []
+            // generate the data in the gallery format
+            for (let i of props.images.results) {
+                tags = []
+                // data of tags
+                for (const tag of i.tags) {
+                    tags.push({
+                        value: tag,
+                        title: tag
+                    })
+                }
+
+                // data of the images
+                // TODO: change the extension of the image, but still working
+                images.push({
+                    src: `data:image/png;base64,${i.base64_image}`,
+                    thumbnail: `data:image/png;base64,${i.base64_image}`,
+                    thumbnailWidth: i.size.width / 2,
+                    thumbnailHeight: i.size.height / 2,
+                    tags: tags,
+                    papaaaa: true,
                 })
 
             }
-
-            images.push({
-                src: `data:image/png;base64,${i.base64_image}`,
-                thumbnail: `data:image/png;base64,${i.base64_image}`,
-                thumbnailWidth: i.size.width / 2,
-                thumbnailHeight: i.size.height / 2,
-                tags:tags
-            })
-            console.log(images);
-
         }
+
     }
 
-    // let ph = [{
-    //     src: "https://c2.staticflickr.com/9/8356/28897120681_3b2c0f43e0_b.jpg",
-    //     thumbnail: "https://c2.staticflickr.com/9/8356/28897120681_3b2c0f43e0_b.jpg",
-    //     thumbnailWidth: 320,
-    //     thumbnailHeight: 174,
-    //     isSelected: true,
-    //     caption: "After Rain (Jeshu John - designerspics.com)"
-    // },
-    // {
-    //     src: "https://c2.staticflickr.com/9/8356/28897120681_3b2c0f43e0_b.jpg",
-    //     thumbnail: "https://c2.staticflickr.com/9/8356/28897120681_3b2c0f43e0_n.jpg",
-    //     thumbnailWidth: 320,
-    //     thumbnailHeight: 212,
-    //     tags: [{ value: "Ocean", title: "Ocean" }, { value: "People", title: "People" }],
-    //     caption: "Boats (Jeshu John - designerspics.com)"
-    // },
-
-    // {
-    //     src: "https://c4.staticflickr.com/9/8887/28897124891_98c4fdd82b_b.jpg",
-    //     thumbnail: "https://c4.staticflickr.com/9/8887/28897124891_98c4fdd82b_n.jpg",
-    //     thumbnailWidth: 320,
-    //     thumbnailHeight: 212
-    // }]
-
-    console.log(props.images)
     return (
         <div>
             <h1>Photos</h1>
             {
-                props.hasOwnProperty("images") && props.images.count > 0 ? (
-                    // <h1>{(images)}</h1>
-                    <Gallery images={images} key="sad"></Gallery>
-                ) : (
-                        <h3>You don't have any images, you can upload one clicking at the button on the topside.</h3>
-                    )
+                printPhotos()
             }
 
         </div>
     )
 }
-
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListPhotos)

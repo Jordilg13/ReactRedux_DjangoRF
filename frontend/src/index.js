@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 
 import { store, history } from './store';
 import { Route, Switch, Router } from 'react-router-dom';
+import { SnackbarProvider } from 'notistack';
 // import ConnectedRouter from 'react-router-redux';
 
 
@@ -16,7 +17,9 @@ ReactDOM.render((
     <Provider store={store}>
         <Router history={history}>
             <Switch>
-                <Route path="/" component={App} />
+                <SnackbarProvider maxSnack={2}>
+                    <Route path="/" component={App} />
+                </SnackbarProvider>
             </Switch>
         </Router>
     </Provider>

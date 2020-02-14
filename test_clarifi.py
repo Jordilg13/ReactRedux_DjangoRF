@@ -1,26 +1,26 @@
 from clarifai.rest import ClarifaiApp
-import cv2
+import cv2, pprint
 
 
 app = ClarifaiApp(api_key="ba60a25dbcc94c3f90948768264d7fac")
 
-model = app.public_models.demographics_model
-response = model.predict_by_filename("./jordi.jpg")
+model = app.public_models.general_model
+response = model.predict_by_filename("./backend/utils/face_recognition/examples/original/jordi.jpg")
 
 # print(app.public_models.face_detection_model)
 # model = app.models.get("face-v1.3")
 # image = ClImage(url="./jordi.jpg")
 # model.predict([image])
-print(response)
+pprint.pprint(response)
 # print(response["outputs"][0]['data']['regions'])
-array_faces = []
-for face, i in zip(response["outputs"][0]['data']['regions'], range(len(response["outputs"][0]['data']['regions']))):
-    # print("person "+str(i))
-    array_faces.append([])
-    for facecoords in face['region_info']['bounding_box']:
-        array_faces[i].append(face['region_info']['bounding_box'][facecoords])
+# array_faces = []
+# for face, i in zip(response["outputs"][0]['data']['regions'], range(len(response["outputs"][0]['data']['regions']))):
+#     # print("person "+str(i))
+#     array_faces.append([])
+#     for facecoords in face['region_info']['bounding_box']:
+#         array_faces[i].append(face['region_info']['bounding_box'][facecoords])
 
-print(array_faces)
+# pprint.pprint(array_faces)
 # image = cv2.imread("./jordi.jpg")
 # for top, left, bottom, right in array_faces:
 #     cv2.rectangle(image, (int(left), int(top)),

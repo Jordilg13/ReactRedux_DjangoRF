@@ -16,7 +16,7 @@ services:
       - ./backend:/drf
     networks:
       - internal_net
-      - redis
+      # - redis
     devices:
       - /dev/nvidia0:/dev/nvidia0
       - /dev/nvidiactl:/dev/nvidiactl
@@ -63,8 +63,8 @@ services:
 
 networks:
   internal_net:
-  redis:
+  # redis:
 
 volumes:
   postgres_vol:
-  redis:
+  # redis:

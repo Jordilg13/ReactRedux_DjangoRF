@@ -11,7 +11,7 @@ import numpy as np
 class Faces():
     def __init__(self, pickle_file, image_input, detection_method="hog"):
         self.image_input = image_input
-        self.data = pickle.loads(open(pickle_file, "rb").read())       
+        self.data = pickle.loads(open(pickle_file, "rb").read())   
         nparr = np.fromstring(image_input.read(), np.uint8)
         self.image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
         rgb = cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
@@ -20,13 +20,15 @@ class Faces():
             model=detection_method)
         self.encodings = face_recognition.face_encodings(rgb, self.boxes)
         self.detected_faces = self.detect_faces()
+        print(self.detect_faces)
         if self.detected_faces is None:
             self.detected_faces = [[],[],[]]
-        self.draw_faces()
+        else:
+            self.draw_faces()
 
     def detect_faces(self):
         names = []
-        detected = []
+        # detected = []
         num_matches = []
         # loop over the facial embeddings
         for encoding in self.encodings:
@@ -49,28 +51,18 @@ class Faces():
                     name = self.data["names"][i]
                     counts[name] = counts.get(name, 0) + 1
 
-                # determine the recognized face with the largest number of
-                # votes (note: in the event of an unlikely tie Python will
-                # select first entry in the dictionary)
-                # #print("------------")
-                # #print(counts)
-                # if counts[max(counts)] > 20:
-                name = max(counts, key=counts.get)
-                detected.append(name)
-                num_matches.append(counts[max(counts)])
-                # else:
-                # name = "Unknown"
-                # #print(detected)
-                # #print(boxes[2])
 
-            # update the list of names
-            names.append(name)
-            return [names, detected, num_matches]
+                for j in counts:
+                    names.append(j)
+                    num_matches.append(counts[j])
+
+            return [names, num_matches]
 
 
+    # This is actually saving the image with the square drown to output/ folder, but i'm not using it
     def draw_faces(self):        
         names = self.detected_faces[0]
-        num_matches = self.detected_faces[2]
+        num_matches = self.detected_faces[1]
 
         a = zip(self.boxes, names, num_matches)
         complete_info_faces = {}
