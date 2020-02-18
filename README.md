@@ -9,8 +9,10 @@ This is how the application looks, it shows the process of upload an image.
 
 This is what the backend is actually getting.
 
-<img src="./readme_media/foto_carnet.png_faces.jpg" height="400px"/>
-<img src="./readme_media/IMG-20191228-WA0020.jpg_faces.jpg" height="400px">
+<div style="display: flex;">
+      <img src="./readme_media/foto_carnet.png_faces.jpg" height="400px"/>
+      <img src="./readme_media/IMG-20191228-WA0020.jpg_faces.jpg" height="400px"/>
+</div>
 
 ## Features
 
@@ -96,17 +98,13 @@ Sharing host's GPU with the container:
 (In backend/utils/face_recognition)
 
 
-encode_faces.py
-: Script to encode the faces of the datasets into files(pickle)
+<b>encode_faces.py</b>: Script to encode the faces of the datasets into files(pickle)
 
-lib_detect_faces.py
-: Library that recognize the faces on the image
+<b>lib_detect_faces.py</b>: Library that recognize the faces on the image
 
-image_resizer.py
-: Script that reduce the size of the image(My 2GB GPU cannot process a big image)
+<b>image_resizer.py</b>: Script that reduce the size of the image(My 2GB GPU cannot process a big image)
 
-increase_dataset.py
-: It generates extra images from a image base, modifying each image and adding zooms, flips, deformations...
+<b>increase_dataset.py</b>: It generates extra images from a image base, modifying each image and adding zooms, flips, deformations...
 
 The other files aren't in use rigth now.
 
