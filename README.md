@@ -14,7 +14,7 @@ This is what the backend is actually getting.
 
 ## Features
 
-| Service | Features |
+| Service | Description |
 | - | - |
 | Layout | The container of the application |
 | Gallery | Where all images are displayed with tags |
@@ -61,33 +61,33 @@ This is what the backend is actually getting.
 
 ### Docker compose
 Version of docker-compose:
-```docker
+```dockerfile
 version: "2.3"
 ```
 
 Ubuntu with CUDA and CUDNN
 
-```docker
-image: "nvidia/cuda:10.1-cudnn7-devel"
+```dockerfile
+image: nvidia/cuda:10.1-cudnn7-devel
 ```
 
 Runtime (this is the reason to use v2.3):
-```docker
+```dockerfile
 runtime: "nvidia"
 ```
 
 Environment variables:
-```docker
+```dockerfile
 environment:
-      - "NVIDIA_VISIBLE_DEVICES=all"
+      - NVIDIA_VISIBLE_DEVICES=all
 ```
 
 Sharing host's GPU with the container:
-```docker
+```dockerfile
     devices:
-      - "/dev/nvidia0:/dev/nvidia0"
-      - "/dev/nvidiactl:/dev/nvidiactl"
-      - "/dev/nvidia-modeset:/dev/nvidia-modeset"
+      - /dev/nvidia0:/dev/nvidia0
+      - /dev/nvidiactl:/dev/nvidiactl
+      - /dev/nvidia-modeset:/dev/nvidia-modeset
 ```
 
 
