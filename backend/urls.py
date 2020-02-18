@@ -20,9 +20,7 @@ urlpatterns = [
     url('admin/', admin.site.urls),
     url('api-auth/', include('rest_framework.urls')),
 
-    # url('api/', include('apps.articles.urls')),
     url('api/', include('apps.authentication.urls')),
     url('api/', include('apps.profiles.urls')),
     url('api/', include('apps.userimages.urls'))
-    # url('api/', include('apps.posts.urls')),
 ]

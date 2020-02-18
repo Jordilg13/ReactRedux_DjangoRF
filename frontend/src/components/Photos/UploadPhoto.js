@@ -38,6 +38,9 @@ class UploadPhoto extends Component {
             nextProps.enqueueSnackbar("Succesfully uploaded", {
                 variant: 'success',
             })
+
+            nextProps.enqueueSnackbar("The image may take a few seconds to be processed. It will appear authomatically in the list")
+
         }
         return nextProps
     }

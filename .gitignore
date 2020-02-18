@@ -9,6 +9,7 @@ migrations/
 images/*
 *.jpg
 *.png
+articles/
 # Created by https://www.gitignore.io/api/react,django
 # Edit at https://www.gitignore.io/?templates=react,django
 
@@ -146,3 +147,4 @@ sketch
 
 # End of https://www.gitignore.io/api/react,django
 
+backend/clarifai_key.txt

@@ -17,7 +17,7 @@ ReactDOM.render((
     <Provider store={store}>
         <Router history={history}>
             <Switch>
-                <SnackbarProvider maxSnack={2}>
+                <SnackbarProvider maxSnack={3}>
                     <Route path="/" component={App} />
                 </SnackbarProvider>
             </Switch>

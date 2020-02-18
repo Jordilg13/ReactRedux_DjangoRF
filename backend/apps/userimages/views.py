@@ -6,7 +6,7 @@ from .models import UserImage
 from .serializers import UserImageSerializer
 
 # Face recognition
-from utils.face_recognition.lib_detec_faces import Faces
+from utils.face_recognition.lib_detect_faces import Faces
 
 # Create your views here.
 

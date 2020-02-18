@@ -42,11 +42,9 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
 
-    'apps.articles',
     'apps.authentication',
     'apps.core',
     'apps.profiles',
-    # 'apps.posts',
     'apps.userimages',
 ]
 
